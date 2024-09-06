@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>145A</title>
+    <style>
+
+        div#board {
+            display: grid;
+            grid-template-columns: repeat(2, 10rem);
+            grid-template-rows: repeat(2, 10rem);
+        }
+
+        div #buttons {
+            width: 20rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img {
+            width: 90%;
+        }
+
+        #board div{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid gray
+        }
+    </style>
+  </head>
+  <body>
+    DRY-prinsippet Don't Repeat Yourself
+
+    <h3>JavaScript</h3>
+    <li>Endre HTML av en tag ut fra id</li>
+    <li>Lage egne kommandoer, dvs. funksjoner</li>
+    <li>onclick</li>
+
+    <div id="app"></div>
+
+    <script>
+
+        var count = 1;
+        let imgHtml = `<img id="logo" src="https://getacademy.no/hubfs/GET_RGB_logo-01-2.png"/>`
+    
+        display()
+
+        function display() {
+            createMainDivs('board')
+            createMainDivs('buttons')
+            createInnerDivs('board','square1')
+            createInnerDivs('board','square2')
+            createInnerDivs('board','square3')
+            createInnerDivs('board','square4')
+            createInnerDivs('buttons','square5')
+            createInnerDivs('buttons','square6')
+            createInnerDivs('buttons','square7')
+            createButtons('square5','buttonUp','▲')
+            createButtons('square6','buttonLeft','◀')
+            createButtons('square6','buttonRight','▶')
+            createButtons('square7','buttonDown','▼')      
+        }
+
+        function createMainDivs(divIdName) {
+            document.getElementById('app').innerHTML += /*html*/ `
+            <div id="${divIdName}"></div>
+            `;
+        }
+        function createInnerDivs(toDivIdName, divIdName, imageName) {
+            document.getElementById(toDivIdName).innerHTML += /*html*/ `
+            <div id="${divIdName}">
+            ${divIdName ==='square1'?imgHtml:""}
+            </div>
+            `;
+        }
+        function createButtons(toDivIdName, buttonId, direction) {
+            let disabledButtonId = document.getElementById(buttonId);
+            document.getElementById(toDivIdName).innerHTML += /*html*/ `
+            <button  id="${buttonId}" onclick="move('${direction}')">${direction}</button>
+            `;
+            if (buttonId === 'buttonUp') {
+                document.getElementById('buttonUp').setAttribute('disabled','')
+                return
+            }
+            if (buttonId === 'buttonLeft') {
+                document.getElementById('buttonLeft').setAttribute('disabled','')
+                return
+            }
+        }
+
+        function move(direction) {
+           if (direction === "▶") {
+            document.getElementById('square'+count).innerHTML = ''
+            count++  
+            document.getElementById('square'+count).innerHTML = /*html*/ `
+            ${imgHtml}
+            `;
+            disableButton('square'+count)
+            return
+           }
+
+           if (direction === "◀") {
+            document.getElementById('square'+count).innerHTML = ''
+            count--  
+            document.getElementById('square'+count).innerHTML = /*html*/ `
+            ${imgHtml}
+            `;
+            disableButton('square'+count)
+            return
+           }
+
+           if (direction === "▼") {
+            document.getElementById('square'+count).innerHTML = ''
+            count+=2  
+            document.getElementById('square'+count).innerHTML = /*html*/ `
+            ${imgHtml}
+            `;
+            disableButton('square'+count)
+            return
+           }
+
+           if (direction === "▲") {
+            document.getElementById('square'+count).innerHTML = ''
+            count-=2  
+            document.getElementById('square'+count).innerHTML = /*html*/ `
+            ${imgHtml}
+            `;
+            disableButton('square'+count)
+            return
+           }
+        }
+
+        function disableButton(square) {
+            console.log(count)
+            if(square === 'square2') {
+                document.getElementById('buttonUp').setAttribute('disabled',null)
+                document.getElementById('buttonRight').setAttribute('disabled',null)
+                document.getElementById('buttonLeft').removeAttribute('disabled')
+                document.getElementById('buttonLeft').setAttribute('onclick','move("◀")')
+                document.getElementById('buttonDown').removeAttribute('disabled')
+                document.getElementById('buttonDown').setAttribute('onclick','move("▼")')
+                return
+            }
+
+            if(square === 'square1') {
+                document.getElementById('buttonUp').setAttribute('disabled',null)
+                document.getElementById('buttonLeft').setAttribute('disabled',null)
+                document.getElementById('buttonRight').removeAttribute('disabled')
+                document.getElementById('buttonRight').setAttribute('onclick','move("▶")')
+                document.getElementById('buttonDown').removeAttribute('disabled')
+                document.getElementById('buttonDown').setAttribute('onclick','move("▼")')
+                return
+            }
+
+            if(square === 'square3') {
+                document.getElementById('buttonDown').setAttribute('disabled',null)
+                document.getElementById('buttonLeft').setAttribute('disabled',null)
+                document.getElementById('buttonRight').removeAttribute('disabled')
+                document.getElementById('buttonRight').setAttribute('onclick','move("▶")')
+                document.getElementById('buttonUp').removeAttribute('disabled')
+                document.getElementById('buttonUp').setAttribute('onclick','move("▲")')
+                return
+            }
+
+            if(square === 'square4') {
+                document.getElementById('buttonDown').setAttribute('disabled',null)
+                document.getElementById('buttonRight').setAttribute('disabled',null)
+                document.getElementById('buttonLeft').removeAttribute('disabled')
+                document.getElementById('buttonLeft').setAttribute('onclick','move("◀")')
+                document.getElementById('buttonUp').removeAttribute('disabled')
+                document.getElementById('buttonUp').setAttribute('onclick','move("▲")')
+                return
+            }          
+        }
+    </script>
+  </body>
+</html>
